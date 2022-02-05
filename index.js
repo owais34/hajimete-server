@@ -2,6 +2,7 @@ const express = require("express");
 const socket = require("socket.io");
 const { userRoomUtil} =require("./services/UserQueue")
 const {QueLoop}=require('./services/QueLoop')
+const path=require('path')
 
 // App setup
 const PORT = process.env.PORT || 5000;
@@ -11,9 +12,13 @@ const server = app.listen(PORT, function () {
   console.log(`http://localhost:${PORT}`);
 });
 
-app.get("/",(req,res)=>{
-  res.send("Hello")
-})
+
+app.use(express.static(path.join(__dirname,"public")))
+
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+ });
 
 //Setting up User Queuer
 const queLoop=new QueLoop();
